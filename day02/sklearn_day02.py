@@ -13,7 +13,14 @@ from sklearn.datasets import load_iris, fetch_20newsgroups, load_boston
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import StandardScaler
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.metrics import classification_report
+from sklearn.feature_extraction import DictVectorizer
+from sklearn.tree import DecisionTreeClassifier, export_graphviz
+from sklearn.ensemble import RandomForestClassifier
 import pandas as pd
+
 
 def datasets_test1():
     """
@@ -54,6 +61,7 @@ def datasets_test3():
     print('获取目标值')
     print(lb.target)
     print(lb.DESCR)
+
 
 def kanncls():
     """
@@ -130,6 +138,81 @@ def kanncls():
     return None
 
 
+def naviebayes():
+    """
+    朴素贝叶斯 进行文本处理
+    :return:
+    """
+    new = fetch_20newsgroups(subset='all')
+    # 进行数据分割
+    x_train, x_test, y_train, y_test = train_test_split(new.data, new.target, test_size=0.25)
+
+    # 对数据进行特征抽取
+    tf = TfidfVectorizer()
+
+    # 以训练集当中的词列表进行每篇文章的重要性统计
+    x_train = tf.fit_transform(x_train)
+    print(tf.get_feature_names())
+    x_test = tf.transform(x_test)
+    # 进行朴素贝叶斯算法的预测
+    mlt = MultinomialNB(alpha=1.0)
+    print(x_train)
+    mlt.fit(x_train, y_train)
+    y_predict = mlt.predict(x_test)
+    print("预测文章类别为：", y_predict)
+    # 得出准确率
+    print("准确率为：", mlt.score(x_test, y_test))
+
+    print("每个类别的准确率与召回率：", classification_report(y_test, y_predict, target_names=new.target_names))
+
+
+def decision():
+    """
+    决策树对泰坦尼克号进行生死预测
+    url: http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.txt
+    :return:
+    """
+    titan = pd.read_csv("http://biostat.mc.vanderbilt.edu/wiki/pub/Main/DataSets/titanic.txt")
+    # 处理数据找出特征值与目标值
+    x = titan[['pclass', 'age', 'sex']]
+    y = titan['survived']
+    print(x)
+    # 缺失值处理
+    x['age'].fillna(x['age'].mean(), inplace=True)
+    # 分割数据集到 训练集合与测试集
+    x_train, x_test, y_train, y_test = train_test_split(x, y, 0.25)
+    # 进行处理（特征工程）特征-》类别-》one_hot编码
+    dict = DictVectorizer()
+    x_train = dict.fit_transform(x_train.to_dict(orient='records'))
+    print(dict.get_feature_names())
+
+    x_test = dict.transform(x_test.to_dict(orient='records'))
+    # print(x_train)
+    #
+    # # 使用决策树进行预判
+    # dec = DecisionTreeClassifier()
+    # dec.fit(x_train, y_train)
+    #
+    # # 预测判断
+    # print("预测的准确率:", dec.score(x_test, y_test))
+    #
+    # # 导出决策树的结构
+    # export_graphviz(dec, out_file="tree.dot",
+    #                 feature_names=['年龄', 'pclass=1st', 'pclass=2nd', 'pclass=3rd', '女性', '男性'])
+
+    # 随机森林进行预测(超参数调优)
+    rf = RandomForestClassifier()
+    param = {"n_estimators": [120, 200, 300, 500, 800, 1200], "max_depth": [5, 8, 15, 25, 30]}
+
+    # 网格搜索与交叉验证
+    gc = GridSearchCV(rf, param_grid=param, cv=2)
+
+    gc.fit(x_train, y_train)
+
+    print("准确率：", gc.score(x_test, y_test))
+
+    print("查看选择的参数模型：", gc.best_params_)
+
 
 
 if __name__ == "__main__":
@@ -138,4 +221,6 @@ if __name__ == "__main__":
     # datasets_test3()
 
     # print(os.getcwd())
-    kanncls()
+    # kanncls()
+    # naviebayes()
+    decision()

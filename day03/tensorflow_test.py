@@ -94,7 +94,7 @@ class TensorFlowReadDataTest(object):
 
 class ReadData(object):
     """
-    读取各类文件 测试集合 csv,picture,bin
+    读取各类文件 测试集合 csv,picture
     """
 
     def __init__(self):
@@ -154,6 +154,144 @@ class ReadData(object):
     def run(self):
         # self.csv_read_file()
         self.pic_read_file()
+
+
+class CifarRead(object):
+    """
+    对二进制的读写操作
+
+    """
+
+    def __init__(self):
+        self.fileList = [os.path.join(os.getcwd() + r'\data\bin', file) for file in
+                         os.listdir(os.getcwd() + r'\data\bin') if file[-3:] == 'bin']
+
+        self.savePath = os.getcwd() + r'\data\bin\path'
+        # 每张图片的属性
+        self.height = 32
+        self.width = 32
+        self.channel = 3
+        # 二进制文件每张图片的字节
+        self.label_bytes = 1
+        self.image_bytes = self.height * self.width * self.channel
+        self.bytes = self.label_bytes + self.image_bytes
+
+    def read_and_decode(self):
+        """
+        读取本地文件并解码
+        :return: None
+        """
+        # 构造文件队列
+        file_queue = tf.train.string_input_producer(self.fileList)
+        # 构造二进制读取器
+        reader = tf.FixedLengthRecordReader(self.bytes)
+        key, value = reader.read(file_queue)
+
+        # 解码内容，二进制文件内容解码
+        lable_image = tf.decode_raw(value, tf.uint8)
+        print(lable_image)
+
+        # 分割导出图片和标签数据，切除特征值和目标值
+        lable = tf.cast(tf.slice(lable_image, [0], [self.label_bytes]), tf.int32)
+        image = tf.slice(lable_image, [self.label_bytes], [self.image_bytes])
+
+        # 对图片特征值进行改变
+        image_reshape = tf.reshape(image, [self.height, self.width, self.channel])
+        print(image_reshape, lable)
+
+        # 批量处理数据
+        image_batch, lable_batch = tf.train.batch([image_reshape, lable], batch_size=10, num_threads=1, capacity=10)
+        print(image_batch, lable_batch)
+
+        return image_batch, lable_batch
+
+    def write_ro_tfrecords(self, image_batch, label_batch):
+        """
+        将图片的特征值进行存储
+        :param image_batch: 图片的特征值
+        :param label_batch: 图片的目标值
+        :return: None
+        """
+        # 建立 TFRcord 储存器
+        writer = tf.python_io.TFRecordWriter(self.savePath)
+
+        # 将每张图循环写出到文件 按example协议存储
+        for i in range(10):
+            # 分别取出第i个图片数据的特征值与目标值
+            image = image_batch[i].eval().tostring()
+            lable = int(label_batch[i].eval()[0])
+
+            # 构造example 数据
+            example = tf.train.Example(
+                features=tf.train.Features(
+                    feature={
+                        "image": tf.train.Feature(bytes_list=tf.train.BytesList(value=[image])),
+                        "lable": tf.train.Feature(int64_list=tf.train.Int64List(value=[lable]))
+                    }
+                )
+            )
+
+            # 写出单独的样本
+            writer.write(example.SerializeToString())
+
+    def read_from_tfrecords(self):
+        """
+        读取数据 example 格式数据读取
+        :return:None
+        """
+        file_queue = tf.train.string_input_producer(self.savePath)
+
+        # 构造阅读器
+        reader = tf.TFRecordReader()
+        key, value = reader.read(file_queue)
+
+        # 解析example 数据
+        features = tf.parse_single_example(
+            value,
+            features={
+                "image": tf.FixedLenFeature([], tf.string),
+                "lable": tf.FixedLenFeature([], tf.int64)
+            }
+        )
+
+        # 解码读取的内容
+        image = tf.decode_raw(features["image"], tf.int8)
+
+        # 固定图片形状，方便下面处理
+        image_reshpe = tf.reshape(image, [self.height, self.width, self.channel])
+        lable = tf.cast(features["lable"], tf.int32)
+        print(image_reshpe, lable)
+
+        # 进行批量处理
+        image_batch, lable_batch = tf.train.batch([image_reshpe, lable], batch_size=10, num_threads=1, capacity=10)
+
+        return image_batch, lable_batch
+
+    def run(self):
+        """
+        测试方法
+        :return: None
+        """
+        if os.listdir(self.savePath):
+            image_batch, lable_batch = self.read_from_tfrecords()
+        else:
+            image_batch, lable_batch = self.read_and_decode()
+
+        with tf.Session() as sess:
+            # 定义一个线程协助器
+            coord = tf.train.Coordinator()
+
+            # 开启读取文件线程
+            threads = tf.train.start_queue_runners(sess, coord=coord)
+
+            # 开启存储
+            self.write_ro_tfrecords(image_batch, lable_batch)
+
+            # 打印读取的内容
+            print(sess.run([image_batch, lable_batch]))
+            # 回收子线程
+            coord.request_stop()
+            coord.join(threads)
 
 
 if __name__ == "__main__":

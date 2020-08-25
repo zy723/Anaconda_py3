@@ -46,4 +46,3 @@ class AnnouncementResource(Resource):
 
         announcement = cache_notice.AnnouncementDetailCache(target).get()
         return announcement
-

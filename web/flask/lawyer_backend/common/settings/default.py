@@ -5,7 +5,7 @@ class DefaultConfig(object):
     # 配置密钥
     SECRET_KEY = "AAAAAAAAAAAAA"
     # 数据库配置
-    SQLALCHEMY_DATABASE_URI = "mysql+pymysql://dbmysql:dbmysql@127.0.0.1/lawyer_ol"
+    SQLALCHEMY_DATABASE_URI = "mysql+mysqlconnector://dbmysql:dbmysql@127.0.0.1/lawyer_ol"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # 数据库主从配置
@@ -21,16 +21,13 @@ class DefaultConfig(object):
 
     # redis集群
     REDIS_CLUSTER = [
-        {"host": "172.16.12.134", "port": "7000"},
-        {"host": "172.16.12.134", "port": "7001"},
-        {"host": "172.16.12.134", "port": "7002"},
+        {"host": "127.0.0.1", "port": "6379"},
+        # {"host": "192.168.0.114", "port": "6381"},
     ]
 
     # redis主从
     REDIS_SENTINELS = [
-        ("172.16.12.134", "16380"),
-        ("172.16.12.134", "16381"),
-        ("172.16.12.134", "16382"),
+        ("127.0.0.1", "6379"),
     ]
     REDIS_SENTINEL_SERVICES_NAME = "mymaster"
 

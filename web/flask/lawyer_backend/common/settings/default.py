@@ -9,19 +9,19 @@ class DefaultConfig(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
     # 数据库主从配置
-    # SLAVE_HOST = "172.16.12.134"
-    # SLAVE_PORT = 8306
-    # SLAVE_USER = "root"
-    # SLAVE_PASSWORD = "mysql"
-    # SLAVE_DATABASE = "lawyer_ol"
-    # SLAVE_CHARSET = "utf8"
+    SLAVE_HOST = "127.0.0.1"
+    SLAVE_PORT = 3306
+    SLAVE_USER = "dbmysql"
+    SLAVE_PASSWORD = "dbmysql"
+    SLAVE_DATABASE = "lawyer_ol"
+    SLAVE_CHARSET = "utf8"
 
     # 默认日志级别
     LOG_LV = logging.DEBUG
 
     # redis集群
     REDIS_CLUSTER = [
-        {"host": "127.0.0.1", "port": "6379"},
+        {"host": "localhost", "port": "6379"},
         # {"host": "192.168.0.114", "port": "6381"},
     ]
 

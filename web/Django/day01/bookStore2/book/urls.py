@@ -1,4 +1,4 @@
-"""bookStore URL Configuration
+"""bookStore2 URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/1.11/topics/http/urls/
@@ -14,9 +14,17 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from django.contrib import admin
+
+from book.views import index, bookList, reverse_test, LoginView
 
 urlpatterns = [
-    url(r'^admin/', admin.site.urls),
-    url(r'^admin/', admin.site.urls),
+    # url(r'^index$/', views.index, name='index'),
+    #     # url(r'^bookList$/', views.bookList, name='bookList'),
+
+    # url(r'^$', index),
+    # 匹配书籍列表信息的URL,调用对应的bookList视图
+    url(r'^booklist/$', bookList, name='index'),
+    url(r'^testproject/$', reverse_test, name='test'),
+    url(r'^(?P<value1>\d+)/(?P<value2>\d+)/$', index, name='test'),
+    url(r'^login/$', LoginView.as_view(), name='login'),
 ]

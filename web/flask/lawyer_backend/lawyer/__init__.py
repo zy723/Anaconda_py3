@@ -1,3 +1,4 @@
+
 from flask import Flask
 from redis.sentinel import Sentinel
 from rediscluster import RedisCluster
@@ -25,6 +26,8 @@ def create_app():
     # TODO 待修改bug 01
     # redis 集群加载
     # app.redis_cluster = RedisCluster(startup_nodes=app.config.get("REDIS_CLUSTER"), decode_responses=True)
+    import redis
+    app.redis_cluster = redis.StrictRedis(host=app.config.get("REDIS_CLUSTER")[0]['host'], port=app.config.get("REDIS_CLUSTER")[0]['port'], db=0)
 
     # redis 哨兵 主从配置
     # sentinel = Sentinel(app.config.get("REDIS_SENTINELS"))

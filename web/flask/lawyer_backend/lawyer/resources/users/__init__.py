@@ -11,3 +11,4 @@ user_api = Api(user_blue, catch_all_404s=True)
 
 # 添加路由资源到对象中
 user_api.add_resource(passport.NewClientResource, "/v1_0/new_client", endpoint="NewClient")
+user_api.add_resource(passport.SMSCodeResource, "/v1_0/sms_code/<path:mobile>", endpoint="SMSCode")

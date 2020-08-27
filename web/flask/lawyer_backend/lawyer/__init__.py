@@ -33,6 +33,8 @@ def create_app():
     # sentinel = Sentinel(app.config.get("REDIS_SENTINELS"))
     # app.redis_master = sentinel.master_for(app.config.get("REDIS_SENTINEL_SERVICES_NAME"))
     # app.redis_slave = sentinel.slave_for(app.config.get("REDIS_SENTINEL_SERVICES_NAME"))
+    app.redis_master = app.redis_cluster
+    app.redis_slave = app.redis_cluster
 
     # 注册蓝图对象到app中
     from .resources.users import user_blue

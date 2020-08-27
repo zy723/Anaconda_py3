@@ -1,7 +1,13 @@
+import random
+
+from flask import current_app
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
 
 from common.utils import parser
+from common.utils.parser import mobile
+from common.utils.slave_db_router import Queries
+from common.utils.yuntongxun.sms import CCP
 
 
 class NewClientResource(Resource):
@@ -30,3 +36,25 @@ class NewClientResource(Resource):
 
 class AuthorizationResource(Resource):
     pass
+
+
+class SMSCodeResource(Resource):
+    """
+    发送手机验证码
+    """
+
+    def get(self, mobile):
+        # 验证手机号是否存在
+        sql = """select mobile from user_basic where mobile=%s;"""
+        user = Queries.fetchone(sql, [mobile, ])
+        if user:
+            return {"message": "user is already exists"}, 400
+
+        # 不存在发送验证码
+        sms_code = "%06d" % random.randint(0, 999999)
+        # CCP().send_template_sms(mobile, [sms_code, 5], 1)
+
+        # 存储临时验证码到redis中
+        current_app.redis_master.setex("SMS_CODE:{}".format(mobile), 60 * 5, sms_code)
+        # 返回相应
+        return {"mobile": mobile, "code": sms_code}

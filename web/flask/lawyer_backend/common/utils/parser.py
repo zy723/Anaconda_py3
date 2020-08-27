@@ -1,15 +1,15 @@
-import imghdr
 import re
+import imghdr
 
 
 def mobile(mobile_str):
     """
     手机校验格式
     """
-    if re.match(r'^1[3-9]/d{9}$', mobile_str):
+    if re.match(r'^1[3-9]\d{9}$', mobile_str):
         return mobile_str
     else:
-        return ValueError("{} is not valid mobile".format(mobile_str))
+        raise ValueError("{} is not valid mobile".format(mobile_str))
 
 
 def regex(pattern):
@@ -21,7 +21,7 @@ def regex(pattern):
         if re.match(pattern, value_str):
             return value_str
         else:
-            return ValueError("invalid params")
+            raise ValueError("invalid params")
 
     return validate
 

@@ -3,6 +3,11 @@
 ## 启动设置
 
 ### 开发模式
+```text
+flask 配置
+lawyer.main
+```
+
 
 ```shell
 export FLASK_ENV=development

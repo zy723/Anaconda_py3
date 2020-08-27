@@ -115,3 +115,31 @@ class SMSCodeResource(Resource):
         current_app.redis_master.setex("SMS_CODE:{}".format(mobile), 60 * 5, sms_code)
         # 返回相应
         return {"mobile": mobile, "code": sms_code}
+
+
+class AuthorizationResouce(Resource, AuthorBasic):
+    """
+    登陆
+    """
+
+    def post(self):
+        # 解析参数
+        rp = RequestParser()
+        rp.add_argument("mobile", type=parser.mobile, required=True, location="json")
+        rp.add_argument("password", type=parser.regex(r"^\w{5,12}$"), required=True, location="json")
+
+        # 获取参数
+        args = rp.parse_args()
+        mobile = args.get("mobile")
+        password = args.get("password")
+
+        # 判断用户是否存在
+        user = User.query.filter(User.mobile == mobile).first()
+        if not user:
+            return {"massage": "user is not exists"}, 400
+        # 校验密码
+        if not user.check_password(password):
+            return {"massage": "authorization faild"}, 400
+
+        token = self._generate_token(user.id, user.role)
+        return {"code": 0, "msg": "ok", "token": token}

@@ -31,6 +31,14 @@ class DefaultConfig(object):
     ]
     REDIS_SENTINEL_SERVICES_NAME = "mymaster"
 
+    # Token 存储有效期 2天
+    TOKEN_HOURS = 60 * 60 * 24 * 2
+
+    # 8,分布式ID常量
+    DATACENTER_ID = 0
+    WORKER_ID = 0
+    SEQUENCE = 0
+
 
 class DevelopConfig(DefaultConfig):
     """

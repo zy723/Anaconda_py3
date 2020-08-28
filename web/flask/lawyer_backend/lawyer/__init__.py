@@ -1,4 +1,5 @@
 from flask import Flask
+from flask_cors import CORS
 from redis.sentinel import Sentinel
 from rediscluster import RedisCluster
 
@@ -11,6 +12,9 @@ def create_app():
     # 工厂模式
     # 创建app对象
     app = Flask(__name__)
+
+    # 设置跨域访问
+    CORS(app)
 
     # 加载配置信息
     config = config_dict.get(app.config.get('ENV'))
@@ -43,6 +47,10 @@ def create_app():
                              app.config["SEQUENCE"])
 
     # 注册蓝图对象到app中
+
     from .resources.users import user_blue
     app.register_blueprint(user_blue)
+
+    from .resources.question import question_bp
+    app.register_blueprint(question_bp)
     return app

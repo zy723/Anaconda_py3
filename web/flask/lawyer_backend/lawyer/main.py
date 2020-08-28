@@ -12,6 +12,7 @@ app = create_app()
 
 @app.route('/')
 def hello_word():
+    print(app.url_map)
     # 测试数据库
     # print(User.query.all())
     # 测试从数据库
@@ -31,8 +32,8 @@ def hello_word():
     # print(current_app.redis_cluster.get("name"))
 
     # 测试雪花算法
-    worker = IdWorker(1, 2, 0)
-    print(worker.get_id())
+    # worker = IdWorker(1, 2, 0)
+    # print(worker.get_id())
 
     return "hello word", 400
 

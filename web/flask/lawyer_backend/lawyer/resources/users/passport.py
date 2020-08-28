@@ -130,11 +130,11 @@ class AuthorizationResouce(Resource, AuthorBasic):
 
         # 获取参数
         args = rp.parse_args()
-        mobile = args.get("mobile")
+        _mobile = args.get("mobile")
         password = args.get("password")
 
         # 判断用户是否存在
-        user = User.query.filter(User.mobile == mobile).first()
+        user = User.query.filter(User.mobile == _mobile).first()
         if not user:
             return {"massage": "user is not exists"}, 400
         # 校验密码

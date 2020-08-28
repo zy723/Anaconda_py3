@@ -1,6 +1,11 @@
+from flask import current_app
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
 
+from common.cache.question import QuestionBasicCache
+from common.models import db
+from common.models.question_answer import Question, QuestionContent
+from common.utils import parser
 from common.utils.slave_db_router import Queries
 
 
@@ -27,7 +32,62 @@ class NewQuesionResource(Resource):
         # 封装数据并返回
         dataList = []
         for item in data:
-            # TODO 01 cache
-            pass
+            question = QuestionBasicCache(item[0]).get()
+            dataList.append({
+                "id": question["id"],
+                "title": question["title"],
+                "author_name": question["author_name"],
+                "expertise": question["expertise"],
+                "city": question["city"],
+                "create_time": question["create_time"],
+                "answer_count": 0,
+            })
 
         return dataList
+
+
+class QuesionResource(Resource):
+    """
+    提交问题
+    """
+
+    def post(self):
+        # 解析参数
+        rp = RequestParser()
+        rp.add_argument("title", type=str, location="from")
+        rp.add_argument("content", type=str, location="from")
+        rp.add_argument("city_id", type=int, location="from")
+        rp.add_argument("expertise_id", type=int, location="from")
+        rp.add_argument("p0", type=parser.image_file, location="files")
+        rp.add_argument("p1", type=parser.image_file, location="files")
+        rp.add_argument("p2", type=parser.image_file, location="files")
+        # 获取参数
+        args = rp.parse_args()
+        title = args.title
+        content = args.content
+        city_id = args.city_id
+        expertise_id = args.expertise_id
+        p0 = args.p0
+        p1 = args.p1
+        p2 = args.p2
+        # 存入数据库
+        try:
+            question = Question()
+            question.user_id = 1191875991891345408
+            question.city_id = city_id
+            question.expertise_id = expertise_id
+            question.title = title
+            db.session.add(question)
+            db.session.flush()
+
+            question_content = QuestionContent(id=question.id, content=content)
+            db.session.add(question_content)
+            db.session.commit()
+        except Exception as e:
+            current_app.logger.error(e)
+            db.session.rollback()
+            return {"message": "问题发布失败"}, 500
+
+        # 上传图片
+        # 返回响应
+        return {"message": "发布成功"}

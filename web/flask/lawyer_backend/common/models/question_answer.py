@@ -14,7 +14,7 @@ class Question(db.Model, TimeModel):
         AUDITED_N = 3
         DELETED = 4
 
-    id = db.Column("quest_id", db.Integer, primary_key=True, doc="问题Id")
+    id = db.Column("qust_id", db.Integer, primary_key=True, doc="问题Id")
     user_id = db.Column(db.Integer, doc="提问问题的用户ID")
     expertise_id = db.Column(db.Integer, doc="问题所属专业ID")
     city_id = db.Column(db.Integer, doc="所在城市ID")

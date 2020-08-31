@@ -47,10 +47,13 @@ def create_app():
                              app.config["SEQUENCE"])
 
     # 注册蓝图对象到app中
-
     from .resources.users import user_blue
     app.register_blueprint(user_blue)
 
     from .resources.question import question_bp
     app.register_blueprint(question_bp)
+
+    from .resources.common import common_bp
+    app.register_blueprint(common_bp)
+
     return app

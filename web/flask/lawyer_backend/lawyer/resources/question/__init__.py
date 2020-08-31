@@ -10,4 +10,5 @@ question_api = Api(question_bp, catch_all_404s=True)
 
 # 首页问题获取
 question_api.add_resource(question.NewQuesionResource, "/v1_0/new_questions", endpoint="NewQuesionResource")
+# 提交问题
 question_api.add_resource(question.QuesionResource, "/v1_0/question", endpoint="QuesionResource")

@@ -1,3 +1,4 @@
+import werkzeug
 from flask import current_app
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
@@ -6,6 +7,7 @@ from common.cache.question import QuestionBasicCache
 from common.models import db
 from common.models.question_answer import Question, QuestionContent
 from common.utils import parser
+from common.utils.image_storage import image_storage
 from common.utils.slave_db_router import Queries
 
 
@@ -54,10 +56,10 @@ class QuesionResource(Resource):
     def post(self):
         # 解析参数
         rp = RequestParser()
-        rp.add_argument("title", type=str, location="from")
-        rp.add_argument("content", type=str, location="from")
-        rp.add_argument("city_id", type=int, location="from")
-        rp.add_argument("expertise_id", type=int, location="from")
+        rp.add_argument("title", type=str, location="form")
+        rp.add_argument("content", type=str, location="form")
+        rp.add_argument("city_id", type=int, location="form")
+        rp.add_argument("expertise_id", type=int, location="form")
         rp.add_argument("p0", type=parser.image_file, location="files")
         rp.add_argument("p1", type=parser.image_file, location="files")
         rp.add_argument("p2", type=parser.image_file, location="files")
@@ -89,5 +91,21 @@ class QuesionResource(Resource):
             return {"message": "问题发布失败"}, 500
 
         # 上传图片
+        image_list = []
+        for item in [p0, p1, p2]:
+            if item:
+                image_name = image_storage(item.read())
+                image_url = "http://qfxw7xaut.hn-bkt.clouddn.com/" + image_name
+                image_list.append(image_url)
+
+        # 数据存于数据库中
+        try:
+            Question.query.filter(Question.id == question.id).update({"cover": image_list})
+            db.session.commit()
+        except Exception as e:
+            current_app.logger.error(e)
+            db.session.rollback()
+            return {"message": "图片存储失败", "code": 0}, 500
+
         # 返回响应
-        return {"message": "发布成功"}
+        return {"message": "ok", "code": 1, "forent_images": image_list}

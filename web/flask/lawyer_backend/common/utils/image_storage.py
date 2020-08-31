@@ -2,8 +2,8 @@ from qiniu import Auth, put_file, etag, put_data
 import qiniu.config
 
 # 需要填写你的 Access Key 和 Secret Key
-access_key = 'v3n5FPnRvLujRroKe3X9FxjMSgtWCmMWBeharusu'
-secret_key = 'd3uJUlaQ9iKh0b5XkhU-Tlx5hjrDiWDDeHA4xotw'
+access_key = 'SWAN51gLqWalWXdn03Pb9y-In5XeNTiYLzMOPtrY'
+secret_key = 'YK1jtzls2hXspaNpxcNSR0_fRM02VJ1wKRPwPIRt'
 
 
 def image_storage(image_data):
@@ -11,7 +11,7 @@ def image_storage(image_data):
     q = Auth(access_key, secret_key)
 
     # 要上传的空间
-    bucket_name = 'info26'
+    bucket_name = 'zy7230'
 
     # 上传到七牛后保存的文件名,如果不指定名称那么由七牛云维护
     key = None

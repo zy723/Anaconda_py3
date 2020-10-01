@@ -56,4 +56,7 @@ def create_app():
     from .resources.common import common_bp
     app.register_blueprint(common_bp)
 
+    from .resources.consult import consult_blue
+    app.register_blueprint(consult_blue)
+
     return app

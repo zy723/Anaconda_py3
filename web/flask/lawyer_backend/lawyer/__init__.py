@@ -47,6 +47,10 @@ def create_app():
                              app.config["WORKER_ID"],
                              app.config["SEQUENCE"])
 
+    # 添加用户钩子 封装g.user_id 每次执行前获取userid
+    from common.utils.middlewares import jwt_authentication
+    app.before_request(jwt_authentication)
+
     # 注册蓝图对象到app中
     from .resources.users import user_blue
     app.register_blueprint(user_blue)

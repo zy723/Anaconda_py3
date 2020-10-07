@@ -5,6 +5,7 @@ from rediscluster import RedisCluster
 
 from common.settings.default import config_dict
 from common.utils.logger import log_file
+from common.utils.login_required import login_required
 from common.utils.snowflake.id_worker import IdWorker
 
 

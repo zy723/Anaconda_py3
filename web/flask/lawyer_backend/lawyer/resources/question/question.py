@@ -1,4 +1,3 @@
-import werkzeug
 from flask import current_app
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
@@ -8,6 +7,7 @@ from common.models import db
 from common.models.question_answer import Question, QuestionContent
 from common.utils import parser
 from common.utils.image_storage import image_storage
+from common.utils.login_required import login_required
 from common.utils.slave_db_router import Queries
 
 
@@ -15,6 +15,9 @@ class NewQuesionResource(Resource):
     """
     首页问题获取
     """
+    method_decorators = {
+        "get": [login_required]
+    }
 
     def get(self):
         # 解析参数

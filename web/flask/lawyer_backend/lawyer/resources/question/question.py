@@ -2,7 +2,8 @@ from flask import current_app
 from flask_restful import Resource
 from flask_restful.reqparse import RequestParser
 
-from common.cache.question import QuestionBasicCache
+from common.cache.question import QuestionBasicCache, QuestionContentCache, AnswerCache
+from common.cache.user import UserCache
 from common.models import db
 from common.models.question_answer import Question, QuestionContent
 from common.utils import parser
@@ -61,20 +62,31 @@ class QuesionResource(Resource):
 
     def get(self):
         """
-        获取问题详情
+        获取问题列表
         :return:
         """
         # 获取用户参数
         rp = RequestParser()
         rp.add_argument("id", type=int, required=True, location="args")
         args = rp.parse_args()
-        id = args.id
-        #  TODO 获取问题详情
+        question_id = args.id
+
         # 查询数据
-
+        #  TODO 获取问题详情
+        question_dict = QuestionBasicCache(question_id).get()
+        user_dict = UserCache(question_dict["user_id"]).get()
+        question_content_dict = QuestionContentCache(question_id).get()
+        # 查询问题列表
+        ans_info_list = AnswerCache(question_id).get()
         # 返回数据
+        data_dict = {
+            "qust_content": question_content_dict,
+            "answer_list": ans_info_list,
+            "author": user_dict,
+            "question": question_dict,
+        }
 
-        return {"message": "hello"}
+        return data_dict
 
     def post(self):
         # 解析参数

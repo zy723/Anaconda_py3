@@ -55,6 +55,26 @@ class QuesionResource(Resource):
     """
     提交问题
     """
+    method_decorators = {
+        "get": [login_required]
+    }
+
+    def get(self):
+        """
+        获取问题详情
+        :return:
+        """
+        # 获取用户参数
+        rp = RequestParser()
+        rp.add_argument("id", type=int, required=True, location="args")
+        args = rp.parse_args()
+        id = args.id
+        #  TODO 获取问题详情
+        # 查询数据
+
+        # 返回数据
+
+        return {"message": "hello"}
 
     def post(self):
         # 解析参数

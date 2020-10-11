@@ -1,0 +1,391 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		// 首页
+		{
+			"path": "pages/index/index",
+
+			"style": {
+				"navigationBarTitleText": "导航栏带搜索框",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						// "type": "transparent",
+						"titleColor": "#fff",
+						"backgroundColor": "#f5f5f5",
+						"buttons": [{
+							"fontSrc": "/static/uni.ttf",
+							"text": "",
+							"width": "40px",
+							"fontSize": "28px",
+							"color": "#000",
+							"background": "rgba(0,0,0,0)"
+						}],
+						"searchInput": {
+							"align": "center",
+							"backgroundColor": "#fff",
+							"borderRadius": "6px",
+							"placeholder": "搜索",
+							"disabled": true
+						}
+					}
+				}
+			}
+		},
+		// 我的提问
+		{
+			"path": "pages/template/ask-details/ask-details",
+
+			"style": {
+				"navigationBarTitleText": "我的提问",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5",
+						"buttons": [{
+							"fontSrc": "/static/uni.ttf",
+							"text": "",
+							"width": "40px",
+							"fontSize": "28px",
+							"color": "#000",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		},
+		// 我要提问
+		{
+			"path": "pages/template/my-ask/ask",
+
+			"style": {
+				"navigationBarTitleText": "我要提问",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+
+					}
+				}
+			}
+		},
+		// 我的提问
+		{
+			"path": "pages/template/my-ask/ask-list",
+		
+			"style": {
+				"navigationBarTitleText": "我的提问",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+					}
+				}
+			}
+		},
+		// 提问详情
+		{
+			"path": "pages/template/my-ask/details",
+		
+			"style": {
+				"navigationBarTitleText": "我的提问",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+							
+					}
+				}
+			}
+		},
+		// 我的咨询
+		{
+			"path": "pages/template/my-advisory/consult-list",
+		
+			"style": {
+				"navigationBarTitleText": "我的咨询",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+					}
+				}
+			}
+		},
+		// 我的评价列表
+		{
+			"path": "pages/template/my-advisory/my-evaluatelist",
+		
+			"style": {
+				"navigationBarTitleText": "我的评论",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+					}
+				}
+			}
+		},
+		// 评价
+		{
+			"path": "pages/template/my-advisory/my-evaluate",
+		
+			"style": {
+				"navigationBarTitleText": "我的评论",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+					}
+				}
+			}
+		},
+		// 删除成功失败
+		{
+			"path": "pages/template/my-ask/delect",
+			"style": {
+				"navigationBarTitleText": "支付成功",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+		
+					}
+				}
+			}
+		},
+		// 律师列表
+		{
+			"path": "pages/template/my-advisory/advisory-list",
+
+			"style": {
+				"navigationBarTitleText": "律师列表",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						// "type": "transparent",
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5",
+						"buttons": [{
+							"fontSrc": "/static/uni.ttf",
+							"text": "",
+							"width": "40px",
+							"fontSize": "28px",
+							"color": "#000",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		},
+		// 律师详情
+		{
+			"path": "pages/template/my-advisory/details",
+
+			"style": {
+				"navigationBarTitleText": "律师主页",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": false //隐藏原生头部
+				}
+			}
+		},
+		// 关注律师
+		{
+			"path": "pages/template/my-advisory/attention-list",
+		
+			"style": {
+				"navigationBarTitleText": "关注的律师",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+					
+					}
+				}
+			}
+		},
+		// 我要咨询
+		{
+			"path": "pages/template/my-advisory/chat",
+
+			"style": {
+				"navigationBarTitleText": "我的提问",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5",
+						"buttons": [{
+							"fontSrc": "/static/uni.ttf",
+							"text": "",
+							"width": "40px",
+							"fontSize": "28px",
+							"color": "#000",
+							"background": "rgba(0,0,0,0)"
+						}]
+					}
+				}
+			}
+		},
+		// 费用支付
+		{
+			"path": "pages/template/my-advisory/pay",
+			"style": {
+				"navigationBarTitleText": "费用支付",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+
+					}
+				}
+			}
+		},
+		// 支付成功失败
+		{
+			"path": "pages/template/my-advisory/buySucceed",
+			"style": {
+				"navigationBarTitleText": "支付成功",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+		
+					}
+				}
+			}
+		},
+		// 个人中心
+		// 律师详情
+		{
+			"path": "pages/template/user/user",
+
+			"style": {
+				"navigationBarTitleText": "律师主页",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": false //隐藏原生头部
+				}
+			}
+		},
+		// 个人信息
+		{
+			"path": "pages/template/user/userInfo",
+			"style": {
+				"navigationBarTitleText": "个人信息",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+		
+					}
+				}
+			}
+		},
+		// 个人信息
+		{
+			"path": "pages/template/user/userPhoto",
+			"style": {
+				"navigationBarTitleText": "手机号修改",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+		
+					}
+				}
+			}
+		},
+		// 登录
+		{
+			"path": "pages/user/login",
+
+			"style": {
+				"navigationBarTitleText": "绑定手机号",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+					}
+				}
+			}
+		},
+		// 登录
+		{
+			"path": "pages/user/reg",
+		
+			"style": {
+				"navigationBarTitleText": "注册",
+				"enablePullDownRefresh": true,
+				"app-plus": {
+					"titleNView": {
+						"titleColor": "#000",
+						"backgroundColor": "#f5f5f5"
+					}
+				}
+			}
+		},
+		// 搜索
+		{
+			"path": "pages/template/nav-search-input/detail/detail",
+			"style": {
+				"navigationBarTitleText": "搜索",
+				"app-plus": {
+					"titleNView":false
+					// "titleNView": {
+					// 	"titleColor": "#353535",
+					// 	"backgroundColor": "#f5f5f5",
+					// 	"buttons": [{
+					// 		"text": "搜索",
+					// 		"fontSize": "14",
+					// 		"select": false,
+					// 		"width": "auto",
+					// 		"color": "#353535"
+					// 	}],
+					// 	"searchInput": {
+					// 		"align": "left",
+					// 		"backgroundColor": "#fff",
+					// 		"borderRadius": "6px",
+					// 		"placeholder": "",
+					// 		"autoFocus": true
+					// 	}
+					// }
+				}
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "white",
+		"navigationBarTitleText": "Hello uniapp",
+		"navigationBarBackgroundColor": "#000010",
+		"backgroundColor": "#F8F8F8",
+		"backgroundColorTop": "#F4F5F6",
+		"backgroundColorBottom": "#F4F5F6",
+		"mp-alipay": {
+			"titleBarColor": "#FFFFFF"
+		}
+	},
+	"h5": {
+		"titleNView": {
+			"backgroundColor": "#000040",
+			"buttons": [{
+				"float": "right",
+				"type": "none"
+			}]
+		}
+	}
+}

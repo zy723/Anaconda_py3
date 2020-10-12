@@ -18,3 +18,5 @@ user_api.add_resource(passport.SMSCodeResource, "/v1_0/sms_code/<path:mobile>", 
 user_api.add_resource(passport.AuthorizationResouce, "/v1_0/authorizations", endpoint="AuthorizationResouce")
 # 个人中心
 user_api.add_resource(profile.UserInfoResource, "/v1_0/user_info_s", endpoint="UserInfoResource")
+# 个人中心-详细
+user_api.add_resource(profile.UserDetailsResource, "/v1_0/user_info_d", endpoint="UserDetailsResource")

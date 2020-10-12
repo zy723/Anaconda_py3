@@ -39,6 +39,9 @@ class DefaultConfig(object):
     WORKER_ID = 0
     SEQUENCE = 0
 
+    # 设置七牛云域名
+    QINIU_DOMAIN = "http://www.qiniuyun.com/"
+
 
 class DevelopConfig(DefaultConfig):
     """

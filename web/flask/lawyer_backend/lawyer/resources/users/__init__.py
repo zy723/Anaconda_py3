@@ -20,3 +20,5 @@ user_api.add_resource(passport.AuthorizationResouce, "/v1_0/authorizations", end
 user_api.add_resource(profile.UserInfoResource, "/v1_0/user_info_s", endpoint="UserInfoResource")
 # 个人中心-详细
 user_api.add_resource(profile.UserDetailsResource, "/v1_0/user_info_d", endpoint="UserDetailsResource")
+# 个人中心-头像上传
+user_api.add_resource(profile.UserPhotoResource, "/v1_0/photo", endpoint="UserPhotoResource")

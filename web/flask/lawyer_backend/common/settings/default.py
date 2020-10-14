@@ -40,7 +40,7 @@ class DefaultConfig(object):
     SEQUENCE = 0
 
     # 设置七牛云域名
-    QINIU_DOMAIN = "http://www.qiniuyun.com/"
+    QINIU_DOMAIN = "http://image.xfacc.net/"
 
 
 class DevelopConfig(DefaultConfig):

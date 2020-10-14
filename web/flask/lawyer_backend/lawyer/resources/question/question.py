@@ -57,7 +57,8 @@ class QuesionResource(Resource):
     提交问题
     """
     method_decorators = {
-        "get": [login_required]
+        "get": [login_required],
+        "post": [login_required],
     }
 
     def get(self):
@@ -130,7 +131,8 @@ class QuesionResource(Resource):
         for item in [p0, p1, p2]:
             if item:
                 image_name = image_storage(item.read())
-                image_url = "http://qfxw7xaut.hn-bkt.clouddn.com/" + image_name
+
+                image_url = current_app.config['QINIU_DOMAIN'] + image_name
                 image_list.append(image_url)
 
         # 数据存于数据库中

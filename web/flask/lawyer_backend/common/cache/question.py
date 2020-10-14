@@ -1,4 +1,6 @@
-from flask import g
+import json
+
+from flask import g, current_app
 from sqlalchemy.orm import load_only
 
 from common.cache.base_cache import BasicCache
@@ -15,12 +17,34 @@ class QuestionBasicCache(object):
 
     def __init__(self, id):
         self.id = id
+        self.key = "question_base:{}".format(self.id)
 
     def get(self):
         """
         获取对象
         :return:
         """
+        # 1. 从redis 中获取查看是否有缓存
+        redis_cluster = current_app.redis_cluster
+
+        try:
+            redis_data = redis_cluster.get(self.key)
+        except Exception as e:
+            current_app.logger.error(e)
+            redis_data = None
+
+        # 2. 判断数据是否存在
+        if redis_data:
+            return json.loads(redis_data)
+        # 3. 获取对象数据
+        obj = self.get_data_obj()
+        # 4. 对象转换成字典
+        obj_dict = self.create_obj_dict(obj)
+
+        redis_cluster.setex(self.key, 60 * 5, json.dumps(obj_dict))
+        return obj_dict
+
+    def get_data_obj(self):
         obj = Question.query.options(
             load_only(
                 Question.id,
@@ -31,12 +55,13 @@ class QuestionBasicCache(object):
                 Question.ctime
             )
         ).filter_by(id=self.id).first()
-
         if not obj:
             return None
+        return obj
+
+    def create_obj_dict(self, obj):
 
         city = City.query.filter_by(id=obj.city_id).first()
-
         author = User.query.filter(User.id == obj.user_id).first()
 
         obj_dict = {

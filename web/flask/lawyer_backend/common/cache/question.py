@@ -1,48 +1,25 @@
 import json
 
-from flask import g, current_app
+from flask import g
 from sqlalchemy.orm import load_only
 
 from common.cache.base_cache import BasicCache
+from common.cache.constants import QustCacheDataTTL
 from common.models.city import City
 from common.models.question_answer import Question, QuestionContent, Answer
 from common.models.user import User, Lawyer, Relation
 from lawyer.resources.question.expertise import EXPERTISE
 
 
-class QuestionBasicCache(object):
+class QuestionBasicCache(BasicCache):
     """
     获取question对象,缓存类
     """
 
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, _id):
+        self.id = _id
         self.key = "question_base:{}".format(self.id)
-
-    def get(self):
-        """
-        获取对象
-        :return:
-        """
-        # 1. 从redis 中获取查看是否有缓存
-        redis_cluster = current_app.redis_cluster
-
-        try:
-            redis_data = redis_cluster.get(self.key)
-        except Exception as e:
-            current_app.logger.error(e)
-            redis_data = None
-
-        # 2. 判断数据是否存在
-        if redis_data:
-            return json.loads(redis_data)
-        # 3. 获取对象数据
-        obj = self.get_data_obj()
-        # 4. 对象转换成字典
-        obj_dict = self.create_obj_dict(obj)
-
-        redis_cluster.setex(self.key, 60 * 5, json.dumps(obj_dict))
-        return obj_dict
+        self.TTL_Cache = QustCacheDataTTL.get_value()
 
     def get_data_obj(self):
         obj = Question.query.options(
@@ -60,7 +37,6 @@ class QuestionBasicCache(object):
         return obj
 
     def create_obj_dict(self, obj):
-
         city = City.query.filter_by(id=obj.city_id).first()
         author = User.query.filter(User.id == obj.user_id).first()
 
@@ -101,8 +77,8 @@ class AnswerCache(object):
     获取问题 回答列表
     """
 
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, _id):
+        self.id = _id
 
     def get(self):
         answers = Answer.query.options(

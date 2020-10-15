@@ -36,10 +36,10 @@ class NewQuesionResource(Resource):
         data = Queries.fetchall(sql, [(cur_page - 1) * per_page_count, per_page_count])
 
         # 封装数据并返回
-        dataList = []
+        data_list = []
         for item in data:
             question = QuestionBasicCache(item[0]).get()
-            dataList.append({
+            data_list.append({
                 "id": question["id"],
                 "title": question["title"],
                 "author_name": question["author_name"],
@@ -49,7 +49,7 @@ class NewQuesionResource(Resource):
                 "answer_count": 0,
             })
 
-        return dataList
+        return data_list
 
 
 class QuesionResource(Resource):

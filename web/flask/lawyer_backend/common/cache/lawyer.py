@@ -1,7 +1,9 @@
+from common.cache.base_cache import BasicCache
+from common.cache.constants import LawyerCacheDataTTL
 from common.models.user import Lawyer, User
 
 
-class LawyerCache(object):
+class LawyerCache(BasicCache):
     """
     获取律师的字典数据
     """
@@ -12,14 +14,17 @@ class LawyerCache(object):
         :param id:
         """
         self.id = id
+        self.key = "lawyer:{}".format(self.id)
+        self.TTL_Cache = LawyerCacheDataTTL.get_value()
 
-    def get(self):
-        """
-        获取用户字典数据
-        :return:
-        """
+    def get_data_obj(self):
         # 获取律师对象
         lawyer = Lawyer.query.get(self.id)
+        if not lawyer:
+            return None
+        return lawyer
+
+    def create_obj_dict(self, lawyer):
         expertise_list = []
         for expertise in lawyer.expertises:
             expertise_list.append(expertise.name)

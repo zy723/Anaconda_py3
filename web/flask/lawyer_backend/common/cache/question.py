@@ -52,41 +52,52 @@ class QuestionBasicCache(BasicCache):
         return obj_dict
 
 
-class QuestionContentCache(object):
+class QuestionContentCache(BasicCache):
     """
     根据用户ID 获取问题内容
     """
 
     def __init__(self, id):
         self.id = id
+        self.key = "question_content:{}".format(self.id)
+        self.TTL_Cache = QustCacheDataTTL.get_value()
 
-    def get(self):
+    def get_data_obj(self):
         content = QuestionContent.query.get(self.id)
         if not content:
             return None
+        return content
+
+    def create_obj_dict(self, obj):
         content_dict = {
-            "id": content.id,
-            "content": content.content
+            "id": obj.id,
+            "content": obj.content
         }
 
         return content_dict
 
 
-class AnswerCache(object):
+class AnswerCache(BasicCache):
     """
     获取问题 回答列表
     """
 
     def __init__(self, _id):
         self.id = _id
+        self.key = "answer:{}".format(self.id)
+        self.TTL_Cache = QustCacheDataTTL.get_value()
 
-    def get(self):
+    def get_data_obj(self):
         answers = Answer.query.options(
             load_only(Answer.id, Answer.qust_id, Answer.content, Answer.status, Answer.ctime, )).filter(
             Answer.qust_id == self.id).all()
 
         if not answers:
             return None
+
+        return answers
+
+    def create_obj_dict(self, answers):
 
         answer_list = []
 

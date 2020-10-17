@@ -8,7 +8,7 @@ from common.cache.constants import DataTTLBase
 class BasicCache(object):
 
     def __init__(self):
-        self.TTL_cache = DataTTLBase.get_value()
+        self.TTL_Cache = DataTTLBase.get_value()
 
     def get(self):
         # 1. 从redis 中获取查看是否有缓存
@@ -27,6 +27,6 @@ class BasicCache(object):
         obj = self.get_data_obj()
         # 4. 对象转换成字典
         obj_dict = self.create_obj_dict(obj)
-        redis_cluster.setex(self.key, self.TTL_cache, json.dumps(obj_dict))
+        redis_cluster.setex(self.key, self.TTL_Cache, json.dumps(obj_dict))
 
         return obj_dict

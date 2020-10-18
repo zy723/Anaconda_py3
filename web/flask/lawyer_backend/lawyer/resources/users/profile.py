@@ -26,7 +26,7 @@ class UserInfoResource(Resource):
 
         user_dict = {
             "user_name": user_info["name"],
-            "user_photo_url": user_info["profile_photo"],
+            "user_photo_url": current_app.config["QINIU_DOMAIN"] + user_info["profile_photo"],
         }
 
         return user_dict

@@ -1,5 +1,5 @@
 from common.cache.base_cache import BasicCache
-from common.cache.constants import LawyerCacheDataTTL
+from common.cache.constants import LawyerCacheDataTTL, LawyerNotExistsTTL
 from common.models.user import Lawyer, User
 
 
@@ -16,6 +16,7 @@ class LawyerCache(BasicCache):
         self.id = id
         self.key = "lawyer:{}".format(self.id)
         self.TTL_Cache = LawyerCacheDataTTL.get_value()
+        self.TTL_Not_Exists = LawyerNotExistsTTL.get_value()
 
     def get_data_obj(self):
         # 获取律师对象

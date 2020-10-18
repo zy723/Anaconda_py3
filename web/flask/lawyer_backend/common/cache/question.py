@@ -4,7 +4,7 @@ from flask import g
 from sqlalchemy.orm import load_only
 
 from common.cache.base_cache import BasicCache
-from common.cache.constants import QustCacheDataTTL
+from common.cache.constants import QustCacheDataTTL, QustNotExistsTTL
 from common.models.city import City
 from common.models.question_answer import Question, QuestionContent, Answer
 from common.models.user import User, Lawyer, Relation
@@ -20,6 +20,7 @@ class QuestionBasicCache(BasicCache):
         self.id = _id
         self.key = "question_base:{}".format(self.id)
         self.TTL_Cache = QustCacheDataTTL.get_value()
+        self.TTL_Not_Exists = QustNotExistsTTL.get_value()
 
     def get_data_obj(self):
         obj = Question.query.options(
@@ -61,6 +62,7 @@ class QuestionContentCache(BasicCache):
         self.id = id
         self.key = "question_content:{}".format(self.id)
         self.TTL_Cache = QustCacheDataTTL.get_value()
+        self.TTL_Not_Exists = QustNotExistsTTL.get_value()
 
     def get_data_obj(self):
         content = QuestionContent.query.get(self.id)
@@ -86,6 +88,7 @@ class AnswerCache(BasicCache):
         self.id = _id
         self.key = "answer:{}".format(self.id)
         self.TTL_Cache = QustCacheDataTTL.get_value()
+        self.TTL_Not_Exists = QustNotExistsTTL.get_value()
 
     def get_data_obj(self):
         answers = Answer.query.options(

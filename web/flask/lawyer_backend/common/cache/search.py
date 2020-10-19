@@ -13,3 +13,9 @@ class UserSearchingHistoryCache(BasicCache):
     def get_data_obj(self):
         objs = None
         return objs
+
+    def create_obj_dict(self, obj):
+        return None
+
+
+

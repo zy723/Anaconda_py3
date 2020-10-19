@@ -1,3 +1,4 @@
+from elasticsearch import Elasticsearch
 from flask import Flask
 from flask_cors import CORS
 from redis.sentinel import Sentinel
@@ -51,6 +52,17 @@ def create_app():
     from common.utils.middlewares import jwt_authentication
     app.before_request(jwt_authentication)
 
+    # 添加 es
+    # app.es = Elasticsearch(
+    #     app.config["ES"],
+    #     # sniff before doing anything
+    #     sniff_on_start=True,
+    #     # refresh nodes after a node fails to respond
+    #     sniff_on_connection_fail=True,
+    #     # and also every 60 seconds
+    #     sniffer_timeout=60
+    # )
+
     # 注册蓝图对象到app中
     from .resources.users import user_blue
     app.register_blueprint(user_blue)
@@ -63,5 +75,9 @@ def create_app():
 
     from .resources.consult import consult_blue
     app.register_blueprint(consult_blue)
+
+    # 添加 搜索蓝图
+    from .resources.seach import search_blue
+    app.register_blueprint(search_blue)
 
     return app

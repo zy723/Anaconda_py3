@@ -42,6 +42,9 @@ class DefaultConfig(object):
     # 设置七牛云域名
     QINIU_DOMAIN = "http://image.xfacc.net/"
 
+    # Es 配置
+    ES = ["127.0.0.1:9200"]
+
 
 class DevelopConfig(DefaultConfig):
     """

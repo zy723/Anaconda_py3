@@ -23,10 +23,12 @@ class UserInfoResource(Resource):
 
         if not user_info:
             return None
-
+        user_photo_url = None
+        if user_info["profile_photo"]:
+            user_photo_url = current_app.config["QINIU_DOMAIN"] + user_info["profile_photo"]
         user_dict = {
             "user_name": user_info["name"],
-            "user_photo_url": current_app.config["QINIU_DOMAIN"] + user_info["profile_photo"],
+            "user_photo_url": user_photo_url,
         }
 
         return user_dict

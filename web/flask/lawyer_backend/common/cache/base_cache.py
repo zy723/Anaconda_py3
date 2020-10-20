@@ -68,7 +68,7 @@ class BasicCache(object):
 
         try:
             redis_cluster = current_app.redis_cluster
-            redis_cluster.delelte(self.key)
+            redis_cluster.delete(self.key)
         except RedisError as e:
             current_app.logger.error(e)
 

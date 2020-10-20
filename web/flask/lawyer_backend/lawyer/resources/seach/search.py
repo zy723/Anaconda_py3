@@ -26,6 +26,10 @@ class HistoryDataResource(Resource):
 
         return ret
 
+    def delete(self):
+        UserSearchingHistoryCache(g.user_id).clear()
+        return {"message": "ok"}
+
 
 class SuggestionResource(Resource):
     """

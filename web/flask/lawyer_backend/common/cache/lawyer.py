@@ -39,7 +39,7 @@ class LawyerCache(BasicCache):
             "real_name": lawyer.real_name,
             "is_certified": lawyer.is_certified,
             "paid_for_once": lawyer.paid_for_once,
-            "expertises": expertise_list,
+            "expertise": expertise_list,
             "is_following": False,
             "profile_photo": User.query.get(self.id).profile_photo,
             "lawyer_firm": lawyer.lawyer_firm

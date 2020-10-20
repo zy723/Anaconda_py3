@@ -36,3 +36,26 @@ class LawyersResource(Resource):
             lawyer_list.append(lawyer_dict)
 
         return lawyer_list
+
+
+class HotLowersResource(Resource):
+    """
+    获取热门律师列表
+    """
+
+    def get(self):
+        # 根据评分查询律师信息
+        sql = """select lawyer_id from lawyer_basic order by l_score limit 5"""
+        data = Queries.fetchall(sql, [])
+
+        # 拼接参数
+        lawyer_list = []
+        for item in data:
+            lawyer_list.append(LawyerCache(item[0]).get())
+
+        # 返回数据
+        return {
+            "lawyer_list": lawyer_list,
+            "message": "success",
+            "status": 200
+        }

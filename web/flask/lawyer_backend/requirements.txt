@@ -10,7 +10,7 @@ Flask-RESTful==0.3.8
 Flask-SQLAlchemy==2.3.2
 idna @ file:///tmp/build/80754af9/idna_1593446292537/work
 itsdangerous==1.1.0
-Jinja2==2.11.2
+Jinja2==2.11.3
 MarkupSafe==1.1.1
 mysql-connector-python==8.0.18
 mysqlclient==2.0.1
